@@ -11,13 +11,14 @@ import App from "./App.jsx";
 import "./index.css";
 import HeroSection from "./components/HeroSection.jsx";
 import Categories from "./components/Categories.jsx";
+import NutritionTracker from "./components/NutritionTracker.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route path="" element={<HeroSection />} />
       <Route path="" element={<Categories />} />
-      <Route path="/nutrition-tracker" />
+      <Route path="/nutrition-tracker" element={<NutritionTracker />} />
       {/* <Route path="" element={<Home />} /> */}
       {/* <Route path="about" element={<Categories />} /> */}
       {/* <Route path="contact" element={<About />} /> */}

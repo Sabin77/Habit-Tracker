@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import logo from "../assets/logo.png";
 import { FaRegUserCircle } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
@@ -9,11 +10,16 @@ function Navbar() {
   return (
     <div className=" flex h-20 w-full shadow-md bg-[#eae8d5]">
       <div className=" flex-initial mx-3 w-60 h-full ">
-        <img className=" h-full w-60" src={logo} alt="Fitness Freak" />
+        <Link to="">
+          <img className=" h-full w-60" src={logo} alt="Fitness Freak" />
+        </Link>
       </div>
       <div className=" flex-1 flex items-center justify-center ">
         <ul className=" flex space-x-14 text-xl ">
-          <li>Home</li>
+          <Link to="">
+            <li>Home</li>
+          </Link>
+
           <div
             onMouseEnter={() => setDropdown(true)}
             onMouseLeave={() => setDropdown(false)}
