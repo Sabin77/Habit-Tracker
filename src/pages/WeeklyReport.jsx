@@ -1,6 +1,65 @@
-import React from "react";
+import React, { useState } from "react";
+import { IoMdAddCircle } from "react-icons/io";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { cn } from "@/lib/utils";
+import { useForm } from "react-hook-form";
+import { format } from "date-fns";
+import { Calendar as CalendarIcon } from "lucide-react";
 
 function WeeklyReport() {
+  const [date, setDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [filteredData, setFilteredData] = useState("");
+
+  const handleReset = () => {
+    setStartDate(null);
+    setEndDate(null);
+    setFilteredData([]);
+  };
+
+  const handleSearch = async () => {
+    if (!startDate || !endDate) {
+      return;
+    }
+
+    const formattedStartDate = format(startDate, "yyyy-MM-dd");
+    const formattedEndDate = format(endDate, "yyyy-MM-dd");
+    console.log(formattedStartDate);
+    console.log(formattedEndDate);
+
+    try {
+      const response = await axios.get(
+        `http://192.168.1.97:2001/api/blogs/filter?startDate=${formattedStartDate}&endDate=${formattedEndDate}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      if (response.data) {
+        setFilteredData(response.data);
+        console.log(response.data);
+      }
+    } catch (error) {}
+  };
+
   return (
     <div className=" flex justify-center mt-4">
       <div className=" w-1/3 border-2 border-black">
@@ -60,9 +119,81 @@ function WeeklyReport() {
             </div>
           </div>
         </div>
-        <div className=" flex flex-row-reverse mr-4 text-4xl text-[#938f6e] ">
-          <IoMdAddCircle />
+
+        <div className="flex flex-col">
+          <div className=" flex mx-2 my-4 items-center">
+            <p className=" font-mono">From:</p>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant={"outline"}
+                  className={cn(
+                    "w-[280px] justify-start text-left font-normal",
+                    !startDate && "text-muted-foreground"
+                  )}
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {startDate ? (
+                    format(startDate, "yyyy-MM-dd")
+                  ) : (
+                    <span>Pick a date</span>
+                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0">
+                <Calendar
+                  mode="single"
+                  selected={startDate}
+                  onSelect={setStartDate}
+                  initialFocus
+                />
+              </PopoverContent>
+            </Popover>
+
+            <p className=" font-mono">To:</p>
+
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant={"outline"}
+                  className={cn(
+                    "w-[280px] justify-start text-left font-normal",
+                    !endDate && "text-muted-foreground"
+                  )}
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {endDate ? (
+                    format(endDate, "yyyy-MM-dd")
+                  ) : (
+                    <span>Pick a date</span>
+                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0">
+                <Calendar
+                  mode="single"
+                  selected={endDate}
+                  onSelect={setEndDate}
+                  initialFocus
+                />
+              </PopoverContent>
+            </Popover>
+            <Button className="ml-4" onClick={handleSearch}>
+              Search
+            </Button>
+            <button
+              className=" py-2 rounded-md px-3 border-2 mx-3 hover:bg-gray-300"
+              onClick={handleReset}
+            >
+              Reset
+            </button>
+          </div>
         </div>
+        {/* <div className=" flex justify-center">
+          <button className="border-2 px-2 py-1 rounded-md hover:bg-[#938f6e]">
+            Search by date
+          </button>
+        </div> */}
         <div className=" border-2 my-5">
           <div className=" text-center text-2xl font-semibold bg-[#938f6e] ">
             Total

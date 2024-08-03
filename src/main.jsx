@@ -12,6 +12,7 @@ import "./index.css";
 import HeroSection from "./components/HeroSection.jsx";
 import Categories from "./components/Categories.jsx";
 import NutritionTracker from "./components/NutritionTracker.jsx";
+import WeeklyReport from "./pages/WeeklyReport.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -19,6 +20,8 @@ const router = createBrowserRouter(
       <Route path="" element={<HeroSection />} />
       <Route path="" element={<Categories />} />
       <Route path="/nutrition-tracker" element={<NutritionTracker />} />
+      <Route path="/weekly-report" element={<WeeklyReport />} />
+
       {/* <Route path="" element={<Home />} /> */}
       {/* <Route path="about" element={<Categories />} /> */}
       {/* <Route path="contact" element={<About />} /> */}
